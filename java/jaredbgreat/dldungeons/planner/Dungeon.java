@@ -14,6 +14,7 @@ import jaredbgreat.dldungeons.ConfigHandler;
 import jaredbgreat.dldungeons.DoomlikeDungeons;
 import jaredbgreat.dldungeons.builder.DBlock;
 import jaredbgreat.dldungeons.pieces.Spawner;
+import jaredbgreat.dldungeons.pieces.SpawnerLogic;
 import jaredbgreat.dldungeons.pieces.chests.BasicChest;
 import jaredbgreat.dldungeons.pieces.entrances.SimpleEntrance;
 import jaredbgreat.dldungeons.pieces.entrances.SpiralStair;
@@ -278,7 +279,7 @@ public class Dungeon {
 		int shiftZ = (map.chunkZ * 16) - (map.room.length / 2) + 8;
 		//for(Room room : rooms) {			
 			//DoomlikeDungeons.profiler.startTask("Adding to room " + room.id);
-			for(Spawner  spawner : room.spawners) {
+			for(Spawner spawner : room.spawners) {
 					DBlock.placeSpawner(map.world, shiftX + spawner.x, spawner.y, shiftZ + spawner.z, spawner.mob);
 			}
 			for(BasicChest  chest : room.chests) {

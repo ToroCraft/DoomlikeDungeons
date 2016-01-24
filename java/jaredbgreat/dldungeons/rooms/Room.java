@@ -14,6 +14,7 @@ import jaredbgreat.dldungeons.pieces.Doorway;
 import jaredbgreat.dldungeons.pieces.Shape;
 import jaredbgreat.dldungeons.pieces.Shapes;
 import jaredbgreat.dldungeons.pieces.Spawner;
+import jaredbgreat.dldungeons.pieces.SpawnerLogic;
 import jaredbgreat.dldungeons.pieces.chests.BasicChest;
 import jaredbgreat.dldungeons.pieces.chests.LootCategory;
 import jaredbgreat.dldungeons.pieces.chests.TreasureChest;
