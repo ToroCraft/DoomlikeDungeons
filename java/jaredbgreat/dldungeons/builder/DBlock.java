@@ -13,27 +13,27 @@ import jaredbgreat.dldungeons.debug.Logging;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
-import java.util.logging.Logger;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.world.World;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 public final class DBlock {
 	private final String id;   // The name
 	private final Block block; // The Minecraft block
 	private final int meta;	   // The blocks meta-data
 	
-	public static final Block spawner = (Block)Block.getBlockFromName("mob_spawner");
-	public static final Block chest   = (Block)Block.getBlockFromName("chest");
-	public static final Block portal1 = (Block)Block.getBlockFromName("end_portal_frame");
-	public static final Block portal2 = (Block)Block.getBlockFromName("end_portal");
-	public static final Block quartz  = (Block)Block.getBlockFromName("quartz_block");
-	public static final Block lapis   = (Block)Block.getBlockFromName("lapis_block");
-	public static final Block water   = (Block)Block.getBlockFromName("water");
-	public static final Block air     = (Block)Block.getBlockFromName("air");
+	public static final Block spawner = Blocks.mob_spawner;
+	public static final Block chest   = Blocks.chest;
+	public static final Block portal1 = Blocks.end_portal_frame;
+	public static final Block portal2 = Blocks.end_portal;
+	public static final Block quartz  = Blocks.quartz_block;
+	public static final Block lapis   = Blocks.lapis_block;
+	public static final Block water   = Blocks.water;
+	public static final Block air     = Blocks.air;
 	
 	public static final ArrayList<DBlock> registry = new ArrayList<DBlock>();
 	
