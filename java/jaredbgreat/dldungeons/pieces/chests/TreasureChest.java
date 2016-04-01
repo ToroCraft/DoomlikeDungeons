@@ -59,7 +59,7 @@ public class TreasureChest extends BasicChest {
 				slot++;
 				if(!validSlot(slot)) return;
 			}
-			contents.setInventorySlotContents(slots.get(slot++).intValue(), treasure);
+			contents.setInventorySlotContents(slots.get(slot).intValue(), treasure);
 		}
 		num = random.nextInt(2 + (level / 3)) + 2;
 		for(int i = 0; i < num; i++) {
@@ -68,7 +68,7 @@ public class TreasureChest extends BasicChest {
 				slot++;
 				if(!validSlot(slot)) return;
 			}
-			contents.setInventorySlotContents(slots.get(slot++).intValue(), treasure);
+			contents.setInventorySlotContents(slots.get(slot).intValue(), treasure);
 		}
 		if(ConfigHandler.stingyLoot) num = random.nextInt(2 + (level / 3)) + 2;
 		else num = random.nextInt(3 + (level / 2)) + 2;
@@ -78,7 +78,7 @@ public class TreasureChest extends BasicChest {
 				slot++;
 				if(!validSlot(slot)) return;
 			}
-			contents.setInventorySlotContents(slots.get(slot++).intValue(), treasure);
+			contents.setInventorySlotContents(slots.get(slot).intValue(), treasure);
 		}
 		if(random.nextInt(7) < level) {
 			if(level >= 6) {
@@ -120,6 +120,6 @@ public class TreasureChest extends BasicChest {
 	
 	public static void initSlots() {
 		// Overkill fix for previous bug; the first and last slot
-		for(int i = 1; i < 25; i++) slots.add(new Integer(i));
+		for(int i = 1; i < 27; i++) slots.add(new Integer(i));
 	}
 }
