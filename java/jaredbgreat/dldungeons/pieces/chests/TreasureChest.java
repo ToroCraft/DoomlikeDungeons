@@ -54,15 +54,6 @@ public class TreasureChest extends BasicChest {
 		}
 		num = random.nextInt(2 + (level / 3)) + 2;
 		for(int i = 0; i < num; i++) {
-			treasure = LootCategory.getLoot(LootType.HEAL, level, random).getStack(random);
-			while(contents.getStackInSlot(slot) != null) {
-				slot++;
-				if(!validSlot(slot)) return;
-			}
-			contents.setInventorySlotContents(slots.get(slot).intValue(), treasure);
-		}
-		num = random.nextInt(2 + (level / 3)) + 2;
-		for(int i = 0; i < num; i++) {
 			treasure = LootCategory.getLoot(LootType.GEAR, level, random).getStack(random);
 			while(contents.getStackInSlot(slot) != null) {
 				slot++;
