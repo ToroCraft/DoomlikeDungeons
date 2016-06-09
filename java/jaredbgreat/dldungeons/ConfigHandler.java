@@ -246,9 +246,11 @@ public class ConfigHandler {
 			
 			for(Object item : Item.itemRegistry){ 
 				String name = Item.itemRegistry.getNameForObject(item);
+				String id   = "     ID = " + Integer.toString(Item.itemRegistry.getIDForObject(item));
 				if(true) {
 					//System.out.println("[DLDUNGEONS] Found item " + name);
 					outstream.write(name);
+					outstream.write(id);
 					outstream.newLine();
 				}
 			}
