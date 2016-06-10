@@ -1,10 +1,7 @@
 # DoomlikeDungeons
 
-<<<<<<< HEAD
-=======
 This mod will add dungeons meant to resemble levels from classic "2 1/2d" fisrt-person shooters and rpgs, and was inspired by earlier dungeons mods and by Oblige (especially version 3.57), a random level generator for Doom. The goal is to create interesting, tactically challenging, and highly varied multi-room dungeons that are fun to explore and rewarding to conquer.
 
->>>>>>> origin/MC1.9.4
 Binaries and general information can be found here:
 
 http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/1293843-doomlike-dungeons
