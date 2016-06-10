@@ -15,13 +15,20 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
-import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ChestGenHooks;
 
+/**
+ * This represents the treasure chests found in destination nodes
+ * (a.k.a., "boss rooms").  Each should have some of all three loot
+ * types, generally of a high level. 
+ * 
+ * @author Jared Blackburn
+ *
+ */
 public class TreasureChest extends BasicChest {
 	
 	static ArrayList<Integer> slots = new ArrayList();	
@@ -31,6 +38,11 @@ public class TreasureChest extends BasicChest {
 		super(x, y, z, level);
 	}
 	
+
+	/**
+	 * This will place some loot of every each type, being sure to use
+	 *  a separate random slot for each item so that none are overwritten. 
+	 */
 	@Override
 	public void place(World world, int x, int y, int z, Random random) {
 		Collections.shuffle(slots, random);
@@ -43,22 +55,22 @@ public class TreasureChest extends BasicChest {
 		TileEntityChest contents = (TileEntityChest)world.getTileEntity(x, y, z);
 		if(ConfigHandler.vanillaLoot) vanillaChest(contents, random);
 		int num;
-		num = random.nextInt(2 + (level / 3)) + 2;
+		num = random.nextInt(3 + (level / 3)) + 2;
 		for(int i = 0; i < num; i++) {
-			treasure = LootCategory.getLoot(LootType.HEAL, level, random).getStack(random);
+			treasure = LootCategory.getLoot(LootType.HEAL, level, random);
 			contents.setInventorySlotContents(slots.get(slot).intValue(), treasure);
 			slot++;
 		}
-		num = random.nextInt(2 + (level / 3)) + 2;
+		num = random.nextInt(3 + (level / 3)) + 2;
 		for(int i = 0; i < num; i++) {
-			treasure = LootCategory.getLoot(LootType.GEAR, level, random).getStack(random);
+			treasure = LootCategory.getLoot(LootType.GEAR, level, random);
 			contents.setInventorySlotContents(slots.get(slot).intValue(), treasure);
 			slot++;
 		}
-		if(ConfigHandler.stingyLoot) num = random.nextInt(2 + (level / 3)) + 2;
+		if(ConfigHandler.stingyLoot) num = random.nextInt(3 + (level / 3)) + 2;
 		else num = random.nextInt(3 + (level / 2)) + 2;
 		for(int i = 0; i < num; i++) {
-			treasure = LootCategory.getLoot(LootType.LOOT, level, random).getStack(random);
+			treasure = LootCategory.getLoot(LootType.LOOT, level, random);
 			contents.setInventorySlotContents(slots.get(slot).intValue(), treasure);
 			slot++;
 		}
@@ -70,11 +82,6 @@ public class TreasureChest extends BasicChest {
 			contents.setInventorySlotContents(slots.get(slot).intValue(), treasure);
 			slot++;
 		}
-	}
-	
-	
-	private boolean validSlot(int slot) {
-		return ((slot >= 0) && (slot < 25));
 	}
 	
 	
@@ -97,6 +104,22 @@ public class TreasureChest extends BasicChest {
 	}
 	
 	
+	/**
+	 * Returns true if a the slot is a valid part of a chests inventory.
+	 * 
+	 * @param slot
+	 * @return
+	 */
+	private boolean validSlot(int slot) {
+		return ((slot >= 0) && (slot < 27));
+	}
+	
+	
+	/**
+	 * Initializes the slots list, which is shuffled to randomize item location in
+	 * the chest without the risk of over writing one item with the another.  Called
+	 * nut LootList.addDefaultLoot to populate the list.
+	 */
 	public static void initSlots() {
 		// Overkill fix for previous bug; the first and last slot
 		for(int i = 0; i < 27; i++) slots.add(new Integer(i));

@@ -12,26 +12,19 @@ package jaredbgreat.dldungeons.commands;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
-import net.minecraftforge.server.command.ForgeCommand;
 
 
-public class CmdDimID extends ForgeCommand {
+public class CmdDimID extends CommandBase {
 
-    public CmdDimID(MinecraftServer server) {
-		super(server);
+    public CmdDimID() {
+		super();
 	}
 
 
 	private List aliases = new ArrayList<String>();
-	
-    
-	@Override
-	public int compareTo(Object o) {
-		return 0;
-	}
 
 	
 	@Override
@@ -59,7 +52,6 @@ public class CmdDimID extends ForgeCommand {
 		icommandsender.addChatMessage(new ChatComponentText("[DLDUNGEONS] " 
 				+ icommandsender.getCommandSenderName() 
 				+ " is in dimension " + dim));
-//		..setColor(EnumChatFormatting.DARK_PURPLE).setItalic(true));
 	}
 	
 	
@@ -82,5 +74,4 @@ public class CmdDimID extends ForgeCommand {
 	public boolean isUsernameIndex(String[] astring, int i) {
 		return false;
 	}
-
 }

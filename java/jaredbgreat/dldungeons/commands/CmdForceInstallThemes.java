@@ -10,32 +10,28 @@ package jaredbgreat.dldungeons.commands;
 
 import jaredbgreat.dldungeons.ConfigHandler;
 import jaredbgreat.dldungeons.setup.Externalizer;
-import jaredbgreat.dldungeons.themes.BiomeLists;
+import jaredbgreat.dldungeons.themes.BiomeSets;
 import jaredbgreat.dldungeons.themes.ThemeReader;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.command.CommandBase;
+import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.server.command.ForgeCommand;
 
-public class CmdForceInstallThemes extends ForgeCommand {
+public class CmdForceInstallThemes extends CommandBase {
 
-	public CmdForceInstallThemes(MinecraftServer server) {
-		super(server);
+	public CmdForceInstallThemes() {
+		super();
 	}
 
 
 	private List aliases = new ArrayList<String>();
-	
-    
-	@Override
-	public int compareTo(Object o) {
-		return 0;
-	}
 
 	
 	@Override
@@ -66,8 +62,7 @@ public class CmdForceInstallThemes extends ForgeCommand {
 		icommandsender.addChatMessage(new ChatComponentText("[DLDUNGEONS] " 
 				+ icommandsender.getCommandSenderName() 
 				+ " has forced reinstalled default themes (existing themes will be overwritten!)"));
-//		..setColor(EnumChatFormatting.DARK_PURPLE).setItalic(true));
-		BiomeLists.reset();
+		BiomeSets.reset();
 	}
 	
 	

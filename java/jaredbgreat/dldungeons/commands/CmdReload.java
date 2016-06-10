@@ -11,24 +11,19 @@ package jaredbgreat.dldungeons.commands;
 import jaredbgreat.dldungeons.ConfigHandler;
 import jaredbgreat.dldungeons.ReadAPI;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
-import net.minecraftforge.server.command.ForgeCommand;
 
-public class CmdReload extends ForgeCommand {
+public class CmdReload extends CommandBase {
 
-    public CmdReload(MinecraftServer server) {
-		super(server);
+    public CmdReload() {
+		super();
 	}
 
-
-	private List aliases = new ArrayList<String>();
 	
-    
 	@Override
 	public int compareTo(Object o) {
 		return 0;
@@ -48,17 +43,12 @@ public class CmdReload extends ForgeCommand {
 
 	
 	@Override
-	public List getCommandAliases() {
-		return aliases;
-	}
-
-	
-	@Override
 	public void processCommand(ICommandSender icommandsender, String[] astring) {		
 			System.out.println("[DLDUNGEONS] " + icommandsender.getCommandSenderName()
 					+ " Used /dldreload command; Reloading config file now.");
 			ReadAPI.reloadConfig();
-			if(ConfigHandler.announceCommands) icommandsender.addChatMessage(new ChatComponentText("[DLDUNGEONS] " + icommandsender.getCommandSenderName()
+			if(ConfigHandler.announceCommands) icommandsender.addChatMessage(new ChatComponentText("[DLDUNGEONS] " 
+					+ icommandsender.getCommandSenderName()
 					+ " Used /dldreload command; Reloading config file now."));
 	}
 	

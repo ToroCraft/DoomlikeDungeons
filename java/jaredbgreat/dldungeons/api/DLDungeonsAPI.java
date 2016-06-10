@@ -24,7 +24,6 @@ public class DLDungeonsAPI {
 	private static final boolean dldloaded = isLoaded();
 	
 	
-	
 	/**
 	 * This allows mod authors to check if Doomlike Dungeons is running in order to potentially
 	 * register methods or classes the might use it, among other things.

@@ -12,7 +12,16 @@ package jaredbgreat.dldungeons.themes;
 
 import java.util.Random;
 
-public enum Degrees implements Autoselectable {
+/**
+ * This represents a discrete probability of a feature or 
+ * characteristic to appear.  This can be interpret as 
+ * a degree of frequency or probability, with human-friendly 
+ * constant names attached.
+ * 
+ * @author Jared Blackurn
+ *
+ */
+public enum Degree implements Autoselectable {
 	
 	
 	NONE	( 0),
@@ -27,11 +36,18 @@ public enum Degrees implements Autoselectable {
 	public static final int scale = 10;
 	
 	
-	Degrees(int val) {
+	Degree(int val) {
 		value = val;
 	}
+
 	
-	
+	/**
+	 * This will return true or false based on the probability 
+	 * this Degree represents.
+	 * 
+	 * @param random
+	 * @return
+	 */
 	public boolean use(Random random) {
 		return(random.nextInt(scale) < value);
 	}	

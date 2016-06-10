@@ -15,13 +15,18 @@ import jaredbgreat.dldungeons.builder.DBlock;
 
 import java.util.Random;
 
-import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ChestGenHooks;
 
+/**
+ * Represents a typical loot chest, including its coordinates and loot level.
+ * 
+ * @author Jared Blackburn
+ *
+ */
 public class BasicChest {
 	
 	public int mx, my, mz, level;
@@ -34,13 +39,28 @@ public class BasicChest {
 		this.level = level;
 	}
 	
-		
+	
+	/**
+	 * This adds a tile entity to the chest, and then calls fillChest to fill it.
+	 * The chest block is placed in the maps by Dungeon.addChestBlocks using 
+	 * DBlock.placeChest.
+	 * 
+	 * @param world
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @param random
+	 */
 	public void place(World world, int x, int y, int z, Random random) {
 		level += random.nextInt(2);
 		if(level >= LootCategory.LEVELS) level = LootCategory.LEVELS - 1;
 		DBlock.placeChest(world, x, y, z);
 		if(world.getBlock(x, y, z) != DBlock.chest) return;
 		TileEntityChest contents = (TileEntityChest)world.getTileEntity(x, y, z);
+		if(contents == null) {
+			System.err.println("DLDUNGEONS: Error, tile entity not found for chest");
+			return;
+		}
 		if(addVanillaLoot(random)) vanillaChest(contents, random);
 		int which = random.nextInt(3);
 		switch (which) {
@@ -57,7 +77,7 @@ public class BasicChest {
 	}
 	
 	
-	private void vanillaChest(TileEntityChest chest, Random random) {
+	private void vanillaChest(TileEntityChest contents, Random random) {
 		int which = random.nextInt(6);
 		ChestGenHooks chinf;
 		switch (which) {
@@ -82,20 +102,27 @@ public class BasicChest {
 			break;
 		}		
         WeightedRandomChestContent.generateChestContents(random, 
-        		chinf.getItems(random), chest, chinf.getCount(random));
+        		chinf.getItems(random), contents, chinf.getCount(random));
 	}
 	
 	
+	/**
+	 * Fills the chest with loot of the specified kind (lootType).
+	 * 
+	 * @param chest
+	 * @param kind
+	 * @param random
+	 */
 	protected void fillChest(TileEntityChest chest, LootType kind, Random random) {		
 		int num;
 		if(ConfigHandler.stingyLoot) num = random.nextInt(2 + (level / 2)) + 1;
 		else num = random.nextInt(3 + (level / 2)) + 2;
 		for(int i = 0; i < num; i++) {
-			ItemStack treasure = LootCategory.getLoot(kind, level, random).getStack(random);
+			ItemStack treasure = LootCategory.getLoot(kind, level, random);
 			if(treasure != null) chest.setInventorySlotContents(random.nextInt(27), treasure);
 		}
 		if(!ConfigHandler.vanillaLoot) {
-			ItemStack treasure = LootCategory.getLoot(LootType.HEAL, level, random).getStack(random);
+			ItemStack treasure = LootCategory.getLoot(LootType.HEAL, level, random);
 			if(treasure != null) chest.setInventorySlotContents(random.nextInt(27), treasure);
 		}
 	}

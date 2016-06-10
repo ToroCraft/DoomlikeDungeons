@@ -12,31 +12,20 @@ package jaredbgreat.dldungeons.commands;
 import static jaredbgreat.dldungeons.builder.Builder.placeDungeon;
 import jaredbgreat.dldungeons.ConfigHandler;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
-import net.minecraftforge.server.command.ForgeCommand;
 
 
-public class CmdSpawn extends ForgeCommand {
+public class CmdSpawn extends CommandBase {
 
-    public CmdSpawn(MinecraftServer server) {
-		super(server);
-	}
-
-
-	private List aliases = new ArrayList<String>();
-	
-    
-	@Override
-	public int compareTo(Object o) {
-		return 0;
+    public CmdSpawn() {
+		super();
 	}
 
 	
@@ -49,12 +38,6 @@ public class CmdSpawn extends ForgeCommand {
 	@Override
 	public String getCommandUsage(ICommandSender icommandsender) {
 		return "/dldspawn";
-	}
-
-	
-	@Override
-	public List getCommandAliases() {
-		return aliases;
 	}
 
 	

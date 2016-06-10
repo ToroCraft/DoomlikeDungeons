@@ -18,11 +18,10 @@ import java.io.IOException;
 import java.util.Random;
 
 import net.minecraft.world.World;
-import net.minecraft.world.storage.SaveHandler;
 
 public class ReadAPI {	
 	
-	/*
+	/**
 	 * This will spawn a dungeon at the given chunk coordinates.  The dungeon will not use the world seed; 
 	 * this is the same as using the /dldspawn command.
 	 */
@@ -37,7 +36,8 @@ public class ReadAPI {
 	}
 	
 	
-	/* This will spawn a dungeon at the given chunk coordinates.  It will use the seed given, 
+	/** 
+	 * This will spawn a dungeon at the given chunk coordinates.  It will use the seed given, 
 	 * which should typically be derived in some way from the world seed, but should NEVER be
 	 * the actual world seed itself.  A simple way to do this is to use nextLong() on an instance
 	 * of Random that is itself based on the world seed.
@@ -53,7 +53,8 @@ public class ReadAPI {
 	}
 	
 	
-	/* This will spawn a dungeon at the given chunk coordinates, using a random number
+	/**
+	 * This will spawn a dungeon at the given chunk coordinates, using a random number
 	 * generated that is passed to it.  Usually this is better than passing a seed unless the
 	 * seed is derived in a specialized way for some reason.
 	 */
@@ -68,7 +69,7 @@ public class ReadAPI {
 	}
 	
 	
-	/*
+	/**
 	 * This will add a dimension to the list the blacklist / whitelist.
 	 */
 	public static void addDimension(byte dim) {
@@ -77,7 +78,7 @@ public class ReadAPI {
 	}
 		
 	
-	/*
+	/**
 	 * This will remove a dimension to the list the blacklist / whitelist.
 	 * 
 	 */
@@ -87,7 +88,7 @@ public class ReadAPI {
 	}
 	
 	
-	/*
+	/**
 	 * This will replace the dimension list (whitelist or blacklist with
 	 * a new list.  It will take a list as a string in the format:
 	 */
@@ -97,7 +98,7 @@ public class ReadAPI {
 	}
 	
 	
-	/*
+	/**
 	 * This will set the difficulty of dungeons being generated to 
 	 * the value passed.
 	 */
@@ -107,7 +108,7 @@ public class ReadAPI {
 	}
 	
 	
-	/*
+	/**
 	 * This will load a theme at run time.  It takes the path of the theme
 	 * file as a parameter.
 	 */
@@ -127,7 +128,7 @@ public class ReadAPI {
 	}
 	
 	
-	/*
+	/**
 	 * This will set the dimension list to act as a blacklist.  This should be
 	 * used with caution, since players may have set it to act as a whitelist
 	 * for reason dealing with mods other than the one calling the method.
@@ -138,7 +139,7 @@ public class ReadAPI {
 	}
 	
 	
-	/*
+	/**
 	 * This will set the dimension list to act as a whitelist.  This should be
 	 * used with caution, since players may have set it to act as a blacklist
 	 * for reason dealing with mods other than the one calling the method.
@@ -149,13 +150,19 @@ public class ReadAPI {
 	}
 	
 	
-	public static void saveWorldData(World world) {
-		if(ConfigHandler.disableAPI) return;
-		String saveDir = world.getSaveHandler().getWorldDirectoryName();
+	/**
+	 * Sets the the save directory to that used by Minecraft for the world, 
+	 * and returns.
+	 * 
+	 * @param world
+	 */
+	public static File saveWorldData(World world) {
+		File saveDir = world.getSaveHandler().getWorldDirectory();
+		return saveDir;
 	}
 	
 	
-	/*
+	/**
 	 * This will reload the config file, effectively erasing any changes made during runtime.
 	 * Alternately, if the config has been edited it will bring up the new settings.
 	 */
@@ -165,6 +172,11 @@ public class ReadAPI {
 	}
 	
 	
+	/**
+	 * Returns true if the API is not disabled, or false if it is disables.
+	 * 
+	 * @return disableAPI
+	 */
 	public static boolean apiOn() {
 		return !ConfigHandler.disableAPI;
 	}

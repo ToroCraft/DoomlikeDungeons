@@ -1,17 +1,14 @@
 package jaredbgreat.dldungeons;
 
-/**
- * An algorithmic multi-room dungeon generator for Minecraft inspired by the 
- * Oblige 3.57 level generator for Doom / Doom II / Heretic / Hexen etc.
- */
-
 /* 
- * This mod is the creation and copyright (c) 2015 
- * of Jared Blackburn (JaredBGreat).
+ * A procedural multi-room dungeon generator for Minecraft inspired by the 
+ * Oblige 3.57 level generator for Doom / Doom II / Heretic / Hexen etc.
+ * 
+ * This mod is the creation and copyright (c) 2015 of Jared Blackburn (JaredBGreat).
  * 
  * It is licensed under the creative commons 4.0 attribution license: * 
  * https://creativecommons.org/licenses/by/4.0/legalcode
-*/	
+*/
 
 
 import jaredbgreat.dldungeons.commands.CmdDimID;
@@ -33,14 +30,16 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 
 
+/**
+ * A procedural multi-room dungeon generator for Minecraft inspired by the 
+ * Oblige 3.57 level generator for Doom / Doom II / Heretic / Hexen etc.
+ */
 @Mod(modid=Info.ID, name=Info.NAME, version=Info.VERSION, acceptableRemoteVersions="*") 
-//Server-side world-gen mod; no new blocks/items/mobs
-//@NetworkMod(clientSideRequired=false, serverSideRequired=false)       
 public class DoomlikeDungeons {
 	private static GenerationHandler dungeonPlacer;
 	public  static IProfiler profiler;
 	
-    @Instance(value = Info.ID)
+    @Instance(Info.ID)
     public static DoomlikeDungeons instance;
     
     @EventHandler
@@ -68,19 +67,12 @@ public class DoomlikeDungeons {
     @EventHandler
     public void serverLoad(FMLServerStartingEvent event)
     {
-    	event.registerServerCommand(new CmdSpawn(event.getServer()));
-    	event.registerServerCommand(new CmdReload(event.getServer()));
-    	event.registerServerCommand(new CmdDimID(event.getServer()));
+    	event.registerServerCommand(new CmdSpawn());
+    	event.registerServerCommand(new CmdReload());
+    	event.registerServerCommand(new CmdDimID());
     	if(ConfigHandler.installCmd) {
-    		event.registerServerCommand(new CmdInstallThemes(event.getServer()));
-    		event.registerServerCommand(new CmdForceInstallThemes(event.getServer()));
+    		event.registerServerCommand(new CmdInstallThemes());
+    		event.registerServerCommand(new CmdForceInstallThemes());
     	}
-    	//ConfigHandler.reload();
     }
-    
-    
-    
-    
-    
-
 }

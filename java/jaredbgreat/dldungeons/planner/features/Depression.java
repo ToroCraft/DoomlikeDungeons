@@ -18,19 +18,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import jaredbgreat.dldungeons.planner.Dungeon;
 import jaredbgreat.dldungeons.rooms.Room;
-import jaredbgreat.dldungeons.themes.Degrees;
+import jaredbgreat.dldungeons.themes.Degree;
 
-public class Depression extends FeatureAdder {
-
-	public Depression(Degrees chance){
+/**
+ * A chance to add an area of lower floor height (i.e., a pit
+ * or depression).
+ * 
+ * @author Jared Blackburn
+ *
+ */
+public class Depression extends IslandPlatform {
+	
+	public Depression(Degree chance){
 		super(chance);
 	}
-
-	@Override
-	public boolean addFeature(Dungeon dungeon, Room room) {
-		boolean built = chance.use(dungeon.random);
-		if(built) room.islandPlatform(dungeon, true);
-		return built;
-	}
-
 }

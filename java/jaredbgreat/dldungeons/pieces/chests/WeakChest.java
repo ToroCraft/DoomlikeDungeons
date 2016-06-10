@@ -13,12 +13,18 @@ import jaredbgreat.dldungeons.builder.DBlock;
 
 import java.util.Random;
 
-import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ChestGenHooks;
 
+/**
+ * Represents a weak / junk chest found in rooms without spawners and containing
+ * small amounts of starter materials.
+ * 
+ * @author Jared Blackburn
+ *
+ */
 public class WeakChest extends BasicChest {
 	
 	
@@ -29,13 +35,7 @@ public class WeakChest extends BasicChest {
 	@Override
 	public void place(World world, int x, int y, int z, Random random) {
 		DBlock.placeChest(world, x, y, z);
-		if(world.getBlock(x, y, z) != DBlock.chest) return;
 		TileEntityChest contents = (TileEntityChest)world.getTileEntity(x, y, z);
-		if(ConfigHandler.vanillaLoot && (!ConfigHandler.stingyLoot) && random.nextBoolean()) {
-			ChestGenHooks chinf = ChestGenHooks.getInfo(ChestGenHooks.BONUS_CHEST);
-	        WeightedRandomChestContent.generateChestContents(random, 
-	        		chinf.getItems(random), contents, chinf.getCount(random));
-		}
 		if(ConfigHandler.stingyLoot) {
 			if(random.nextBoolean()) fillChest(contents, LootType.GEAR, random);
 			else fillChest(contents, LootType.HEAL, random);

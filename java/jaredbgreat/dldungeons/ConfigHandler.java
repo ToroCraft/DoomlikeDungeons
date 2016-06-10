@@ -11,8 +11,8 @@ package jaredbgreat.dldungeons;
 
 
 import jaredbgreat.dldungeons.builder.Builder;
+import jaredbgreat.dldungeons.planner.mapping.MapMatrix;
 import jaredbgreat.dldungeons.setup.Externalizer;
-import jaredbgreat.dldungeons.themes.Theme;
 import jaredbgreat.dldungeons.themes.ThemeReader;
 
 import java.io.BufferedWriter;
@@ -31,7 +31,19 @@ import net.minecraft.item.Item;
 import net.minecraftforge.common.BiomeDictionary.Type;
 import net.minecraftforge.common.config.Configuration;
 
-public class ConfigHandler {
+
+/**
+ * This class reads and holds data from the main configuration file.
+ * 
+ * It might have been better to store many of these with the class they
+ * directly influence, but this is not likely to be changed as the current 
+ * system is already in place the rest of the code base is already mature.
+ * 
+ * In addition to reading and holding config data, this class also contains 
+ * utility methods output information that can be useful in setting up 
+ * configurations and writing theme files.
+ */
+public final class ConfigHandler {
 	
 	private static File mainConfig;
 	private static File themesDir;
@@ -44,13 +56,15 @@ public class ConfigHandler {
 	
 	private static final int[] DEFAULT_DIMS = {0, -1};
 	
-//	private static final boolean DEFAULT_NODEND = true;
 	private static final boolean DEFAULT_WRITE_LISTS = false;
 	private static final boolean DEFAULT_NATURAL_SPAWN = true;
 	private static final boolean DEFAULT_OBEY_RULE = true;
 	private static final boolean DEFAULT_POSITIVE_DIMS = true;
 	private static final boolean DEFAULT_ANNOUNCE_COMMANDS = true;
-	private static final boolean DEFAULT_VANILLA_LOOT = true;	
+	
+	// Vanilla loot will not be added in version of Mincraft 1.9+
+	// Instead all dungeons will have some loot enchanted.
+	private static final boolean DEFAULT_VANILLA_LOOT = false;	
 	private static final boolean DEFAULT_STINGY_LOOT = false;	
 	private static final boolean EASY_FIND = false;
 
@@ -87,6 +101,14 @@ public class ConfigHandler {
 	public static Difficulty difficulty;
 
 	
+	// All methods and data are static. 
+	// There is no reason this should ever be instantiated.
+	private ConfigHandler(){/*Do nothing*/}
+	
+	
+	/**
+	 * This will read the them file and apply the themes.
+	 */
 	public static void init() {
 		File file = new File(ConfigHandler.configDir.toString() 
 			+ File.separator + Info.OLD_ID  + ".cfg");
@@ -115,10 +137,6 @@ public class ConfigHandler {
 		for(int i = 0; i < dims.length; i++) System.out.print(dims[i] + ", ");
 		System.out.println();
 		
-//		boolean noEnd = config.get("General", "NotInEnd", DEFAULT_NODEND).getBoolean(true);
-//		GenerationHandler.setEnd(noEnd);
-//		System.out.println("[DLDUNGEONS] NoEnd set to: " + noEnd);
-		
 		naturalSpawn = config.get("General", "SpawnWithWordgen", DEFAULT_NATURAL_SPAWN).getBoolean(true);
 		System.out.println("[DLDUNGEONS] Will spawn dungeons in with world generation? " + naturalSpawn);
 		
@@ -146,10 +164,6 @@ public class ConfigHandler {
 		installCmd = config.get("General", "InstallThemesByCommand", INSTALL_CMD).getBoolean(INSTALL_CMD);
 		System.out.println("[DLDUNGEONS] Can themes be (re)installed by command? " + installCmd);
 		
-		vanillaLoot = config.get("General", "IncludeVanillaChestLoot", 
-				DEFAULT_VANILLA_LOOT).getBoolean(DEFAULT_VANILLA_LOOT);
-		System.out.println("[DLDUNGEONS] Will include vanilla loot from vanilla chests? " + vanillaLoot);
-		
 		stingyLoot = config.get("General", "StingyWithLoot", 
 				DEFAULT_STINGY_LOOT).getBoolean(DEFAULT_STINGY_LOOT);
 		System.out.println("[DLDUNGEONS] Will be stingy with chests? " + stingyLoot);
@@ -161,7 +175,7 @@ public class ConfigHandler {
 		
 		// API Stuff
 		disableAPI = config.get("API", "DisableApiCalls", DISABLE_API).getBoolean(DISABLE_API);
-		System.out.println("[DLDUNGEONS] Will use? " + !disableAPI);
+		System.out.println("[DLDUNGEONS] Will use API? " + !disableAPI);
 
 		noMobChanges = config.get("API", "DontAllowApiOnMobs", NO_MOB_CHANGES).getBoolean(NO_MOB_CHANGES);
 		System.out.println("[DLDUNGEONS] Will allow API base mob change? " + !noMobChanges);
@@ -169,6 +183,8 @@ public class ConfigHandler {
 		
 		// Debugging
 		Builder.setDebugPole(config.get("Debugging", "BuildPole", false).getBoolean(false));
+		
+		MapMatrix.setDrawFlyingMap(config.get("Debugging", "BuildFlyingMap", false).getBoolean(false));
 		
 		profile = config.get("Debugging", "AutoProfilingOn", PROFILE).getBoolean(PROFILE);
 		System.out.println("[DLDUNGEONS] Will self-profile? " + profile);
@@ -180,11 +196,20 @@ public class ConfigHandler {
 	}
 	
 	
+	/**
+	 * This will reload the config data; really just 
+	 * wraps init.
+	 */
 	protected static void reload() {
 		init();
 	}
 	
 	
+	/**
+	 * This will output lists of blocks, items, and mobs know to the 
+	 * game with their proper, unlocalized names.  This data is useful
+	 * in editing theme files.
+	 */
 	public static void generateLists() {
 		if(!writeLists) return;
 		listsDir = new File(configDir.toString() + File.separator + "lists");
@@ -198,14 +223,18 @@ public class ConfigHandler {
 			System.out.println("[DLDUNGEONS] Warning: " + listsDir 
 					+ " is not a directory (folder); no themes loaded.");
 		} else {		
-			listEntities();
+			listMobs();
 			listItems();
 			listBlocks();
 		}
 	}
 	
 	
-	public static void listEntities() {	
+	/**
+	 * This will list all mobs, using there unlocalized names, writing 
+	 * the data to the file lists/mobs.txt.
+	 */
+	public static void listMobs() {	
 		ArrayList<String> mobNames = new ArrayList<String>();
 		mobNames.addAll(EntityList.stringToClassMapping.keySet());
 		Collections.sort(mobNames);
@@ -218,10 +247,7 @@ public class ConfigHandler {
 			
 			for(String name : mobNames){ 
 				Class A = (Class)EntityList.stringToClassMapping.get(name);
-				//System.out.println(EntityList.stringToClassMapping.get(name));
-				//System.out.println(A);
 				if(EntityLiving.class.isAssignableFrom(A) && !Modifier.isAbstract(A.getModifiers())) {
-					//System.out.println("[DLDUNGEONS] Found living entity " + (String)name);
 					outstream.write((String)name);
 					outstream.newLine();
 				}
@@ -234,6 +260,11 @@ public class ConfigHandler {
 	}
 	
 	
+	/**
+	 * This will list all items, using their complete unlocalized names 
+	 * with mod id's, and write them the file lists/items.txt.  This 
+	 * is useful for writing theme files.
+	 */
 	public static void listItems() {	
 		BufferedWriter outstream = null;
 		File itemlist = new File(listsDir.toString() + File.separator + "itmes.txt");
@@ -241,14 +272,12 @@ public class ConfigHandler {
 		try {
 			outstream = new BufferedWriter(new 
 					FileWriter(itemlist.toString()));
-			
 			if(outstream == null) throw new IOException();
 			
 			for(Object item : Item.itemRegistry){ 
 				String name = Item.itemRegistry.getNameForObject(item);
 				String id   = "     ID = " + Integer.toString(Item.itemRegistry.getIDForObject(item));
 				if(true) {
-					//System.out.println("[DLDUNGEONS] Found item " + name);
 					outstream.write(name);
 					outstream.write(id);
 					outstream.newLine();
@@ -263,6 +292,11 @@ public class ConfigHandler {
 	}
 	
 	
+	/**
+	 * This will list all blocks using their correct, unlocalized names, complete with 
+	 * mod id's, and write them to the file lists/blocks.txt.  This is useful for editing 
+	 * theme files.
+	 */
 	public static void listBlocks() {	
 		BufferedWriter outstream = null;
 		File itemlist = new File(listsDir.toString() + File.separator + "blocks.txt");
@@ -270,13 +304,9 @@ public class ConfigHandler {
 		try {
 			outstream = new BufferedWriter(new 
 					FileWriter(itemlist.toString()));
-			
-			if(outstream == null) throw new IOException();	
-			
 			for(Object block : Block.blockRegistry){ 
 				String name = Block.blockRegistry.getNameForObject(block);
 				if(true) {
-					//System.out.println("[DLDUNGEONS] Found item " + name);
 					outstream.write(name);
 					outstream.newLine();
 				}
@@ -290,10 +320,14 @@ public class ConfigHandler {
 	}
 	
 	
+	/**
+	 * This will open the theme's directory for some general housekeeping 
+	 * purposes.  I does not read the theme files, as this called by init 
+	 * during pre-init phase of mod loading, while themes are loaded 
+	 * post-init to allow other mods a chance to load and register their 
+	 * content.
+	 */
 	private static void openThemesDir() {
-		// This will open the directory for theme data; it will not load themes
-		// as that must be done post-init incase blocks / mobs / items from
-		// other mobs are requested by user themes.
 		Externalizer exporter;
 		String themesDirName = configDir.toString() + File.separator 
 				+ "themes" + File.separator;
@@ -317,6 +351,12 @@ public class ConfigHandler {
 	}
 	
 	
+	/**
+	 * This convert difficulty setting from an integer to a 
+	 * Difficulty enum constant. 
+	 * 
+	 * @param diff
+	 */
 	protected static void parseDiff(int diff) {
 		switch(diff) {
 			case 0:
@@ -343,6 +383,14 @@ public class ConfigHandler {
 	}
 	
 	
+	/**
+	 * This looks for the mods config directory, and attempts to 
+	 * create it if it does not exist.  It will them set this as 
+	 * the config directory and return it as a File.
+	 * 
+	 * @param fd
+	 * @return the config directory / folder
+	 */
 	public static File findConfigDir(File fd) {
 		File out = new File(fd.toString() + File.separator + Info.OLD_ID);
 		if(!out.exists()) out.mkdir();
@@ -359,6 +407,12 @@ public class ConfigHandler {
 	}
 	
 	
+	/**
+	 * This will put biome types in the string array into the list of 
+	 * types where no dungeons show everr generate.
+	 * 
+	 * @param array
+	 */
 	private static void processBiomeExclusions(String[] array) {
 		for(String str : array) {
 			str = str.toUpperCase();
@@ -370,14 +424,18 @@ public class ConfigHandler {
 				}
 			} catch(Exception e) {
 				System.err.println("[DLDUNGEONS] Error in config! " + str + " is not valid biome dictionary type!");
+				e.printStackTrace();
 			}
 		}
 	}
 	
 	
+	/**
+	 * Returns the full path of the config directory as a String.
+	 * 
+	 * @return
+	 */
 	public static String getConfigDir() {
 		return configDir + File.separator;
 	}
-
-	
 }
