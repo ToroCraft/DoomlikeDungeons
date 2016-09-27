@@ -1,7 +1,5 @@
 package jaredbgreat.dldungeons.builder;
 
-import jaredbgreat.dldungeons.api.DLDEvent;
-
 /* 
  * This mod is the creation and copyright (c) 2015 
  * of Jared Blackburn (JaredBGreat).
@@ -9,6 +7,8 @@ import jaredbgreat.dldungeons.api.DLDEvent;
  * It is licensed under the creative commons 4.0 attribution license: * 
  * https://creativecommons.org/licenses/by/4.0/legalcode
 */	
+
+import jaredbgreat.dldungeons.api.DLDEvent;
 
 import jaredbgreat.dldungeons.debug.Logging;
 
@@ -272,7 +272,7 @@ public final class DBlock {
 	 */
 	public static void deleteBlock(World world, int x, int y, int z, boolean flooded) {
 		if(isProtectedBlock(world, x, y, z)) return;
-		if(flooded) placeBlock(world, x, y, z, water);
+		if(flooded) placeBlock(world, x, y, z, water); 
 		else world.setBlockToAir(new BlockPos(x, y, z));
 	}
 	

@@ -47,7 +47,6 @@ public class Builder {
 	public static void placeDungeon(Random random, int chunkX, int chunkZ, World world) throws Throwable {	
 		if(world.isRemote) return; // Do not perform world-gen on the client!
 		if (MinecraftForge.TERRAIN_GEN_BUS.post(new DLDEvent.placeDungeon(random, chunkX, chunkZ, world))) return;
-		
 		DoomlikeDungeons.profiler.startTask("Create Dungeons");
 		Dungeon dungeon = new Dungeon(random, 
 								world.getBiomeGenForCoords(new BlockPos((chunkX * 16), 64, (chunkZ * 16))), 

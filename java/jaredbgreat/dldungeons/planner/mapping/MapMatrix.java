@@ -105,7 +105,6 @@ public class MapMatrix {
 		int shiftZ = (chunkZ * 16) - (room.length / 2) + 8;
 		int below;
 		boolean flooded = dungeon.theme.flags.contains(ThemeFlags.WATER);
-		
 		MinecraftForge.TERRAIN_GEN_BUS.post(new DLDEvent.BeforeBuild(this, shiftX, shiftZ, flooded));
 		
 		for(int i = 0; i < room.length; i++)
@@ -177,13 +176,13 @@ public class MapMatrix {
 			}	
 		
 		MinecraftForge.TERRAIN_GEN_BUS.post(new DLDEvent.AfterBuild(this, shiftX, shiftZ, flooded));
-		
 		DoomlikeDungeons.profiler.endTask("Building Dungeon architecture");
 		dungeon.addTileEntities();	
 		dungeon.addEntrances();
 		DoomlikeDungeons.profiler.endTask("Building Dungeon in World");
 	}
-
+	
+	
 	/**
 	 * Returns true if a block should be placed in those coordinates; that is 
 	 * the block is not air or the room is not degenerate.

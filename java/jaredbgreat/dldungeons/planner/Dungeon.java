@@ -1,10 +1,6 @@
 package jaredbgreat.dldungeons.planner;
 
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Random;
-
 /* 
  * This mod is the creation and copyright (c) 2015 
  * of Jared Blackburn (JaredBGreat).
@@ -13,6 +9,9 @@ import java.util.Random;
  * https://creativecommons.org/licenses/by/4.0/legalcode
 */	
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Random;
 
 import jaredbgreat.dldungeons.ConfigHandler;
 import jaredbgreat.dldungeons.DoomlikeDungeons;
@@ -429,7 +428,6 @@ public class Dungeon {
 		if(variability.use(random)) entrance = random.nextInt(3);
 		else entrance = entrancePref; 
 		if(ConfigHandler.easyFind) entrance = 1;
-		
 		if(MinecraftForge.TERRAIN_GEN_BUS.post(new DLDEvent.AddEntrance(this, room))) return;
 		
 		switch (entrance) {
