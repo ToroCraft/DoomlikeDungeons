@@ -301,6 +301,7 @@ public final class DBlock {
 	 */
 	public static void placeSpawner(World world, int x, int y, int z, String mob) {
 		BlockPos pos = new BlockPos(x, y, z);
+		if (MinecraftForge.TERRAIN_GEN_BUS.post(new DLDEvent.BeforePlaceSpawner(world, pos, mob))) return;
 		if(isProtectedBlock(world, x, y, z)) return;
 		if(!placeBlock(world, x, y, z, spawner)) return;
 		TileEntityMobSpawner theSpawner = (TileEntityMobSpawner)world.getTileEntity(pos);

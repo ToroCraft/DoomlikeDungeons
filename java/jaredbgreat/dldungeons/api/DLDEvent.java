@@ -7,6 +7,7 @@ import jaredbgreat.dldungeons.planner.Dungeon;
 import jaredbgreat.dldungeons.planner.mapping.MapMatrix;
 import jaredbgreat.dldungeons.rooms.Room;
 import net.minecraft.block.Block;
+import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.eventhandler.Cancelable;
@@ -101,6 +102,89 @@ public class DLDEvent extends Event {
 	}
 
 	@Cancelable
+	public static class BeforePlaceSpawner extends DLDEvent {
+
+		private final World world;
+		private final BlockPos pos;
+		private final String mob;
+
+		public BeforePlaceSpawner(World world, BlockPos pos, String mob) {
+			this.world = world;
+			this.pos = pos;
+			this.mob = mob;
+		}
+
+		public World getWorld() {
+			return world;
+		}
+
+		public BlockPos getPos() {
+			return pos;
+		}
+
+		public String getMob() {
+			return mob;
+		}
+
+	}
+
+	public static class AfterChestTileEntity extends DLDEvent {
+
+		private final World world;
+		private final TileEntityChest contents;
+		private final int which;
+		private final int x;
+		private final int y;
+		private final int z;
+		private final Random random;
+		private final int level;
+
+		public AfterChestTileEntity(World world, TileEntityChest contents, int which, int x, int y, int z, Random random, int level) {
+			this.world = world;
+			this.contents = contents;
+			this.which = which;
+			this.x = x;
+			this.y = y;
+			this.z = z;
+			this.random = random;
+			this.level = level;
+		}
+
+		public World getWorld() {
+			return world;
+		}
+
+		public TileEntityChest getContents() {
+			return contents;
+		}
+
+		public int getWhich() {
+			return which;
+		}
+
+		public int getX() {
+			return x;
+		}
+
+		public int getY() {
+			return y;
+		}
+
+		public int getZ() {
+			return z;
+		}
+
+		public Random getRandom() {
+			return random;
+		}
+
+		public int getLevel() {
+			return level;
+		}
+
+	}
+
+	@Cancelable
 	public static class AddTileEntitiesToRoom extends DungeonRoom {
 		public AddTileEntitiesToRoom(Dungeon dungeon, Room room) {
 			super(dungeon, room);
@@ -152,14 +236,14 @@ public class DLDEvent extends Event {
 	}
 
 	@Cancelable
-	public static class placeDungeon extends DLDEvent {
+	public abstract static class PlaceDungeon extends DLDEvent {
 
 		protected final Random random;
 		protected final int chunkX;
 		protected final int chunkZ;
 		protected final World world;
 
-		public placeDungeon(Random random, int chunkX, int chunkZ, World world) {
+		public PlaceDungeon(Random random, int chunkX, int chunkZ, World world) {
 			this.random = random;
 			this.chunkX = chunkX;
 			this.chunkZ = chunkZ;
@@ -180,6 +264,27 @@ public class DLDEvent extends Event {
 
 		public World getWorld() {
 			return world;
+		}
+
+	}
+
+	@Cancelable
+	public static class PlaceDungeonBegin extends PlaceDungeon {
+		public PlaceDungeonBegin(Random random, int chunkX, int chunkZ, World world) {
+			super(random, chunkX, chunkZ, world);
+		}
+	}
+
+	public static class PlaceDungeonFinish extends PlaceDungeon {
+		private final Dungeon dungeon;
+
+		public PlaceDungeonFinish(Random random, int chunkX, int chunkZ, World world, Dungeon dungeon) {
+			super(random, chunkX, chunkZ, world);
+			this.dungeon = dungeon;
+		}
+
+		public Dungeon getDungeon() {
+			return dungeon;
 		}
 
 	}

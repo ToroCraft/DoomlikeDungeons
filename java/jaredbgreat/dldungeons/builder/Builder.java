@@ -46,7 +46,7 @@ public class Builder {
 	 */
 	public static void placeDungeon(Random random, int chunkX, int chunkZ, World world) throws Throwable {	
 		if(world.isRemote) return; // Do not perform world-gen on the client!
-		if (MinecraftForge.TERRAIN_GEN_BUS.post(new DLDEvent.placeDungeon(random, chunkX, chunkZ, world))) return;
+		if (MinecraftForge.TERRAIN_GEN_BUS.post(new DLDEvent.PlaceDungeonBegin(random, chunkX, chunkZ, world))) return;
 		DoomlikeDungeons.profiler.startTask("Create Dungeons");
 		Dungeon dungeon = new Dungeon(random, 
 								world.getBiomeGenForCoords(new BlockPos((chunkX * 16), 64, (chunkZ * 16))), 
@@ -54,6 +54,7 @@ public class Builder {
 		buildDungeon(dungeon);
 		dungeon.preFinalize();
 		dungeon = null;
+		MinecraftForge.TERRAIN_GEN_BUS.post(new DLDEvent.PlaceDungeonFinish(random, chunkX, chunkZ, world, dungeon));
 		DoomlikeDungeons.profiler.endTask("Create Dungeons");
 	}
 	
@@ -73,7 +74,7 @@ public class Builder {
 	public static void placeDungeon(Random random, int chunkX, int chunkZ, World world,
 						IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) throws Throwable {	
 		if(world.isRemote) return; // Do not perform world-gen on the client!
-		if (MinecraftForge.TERRAIN_GEN_BUS.post(new DLDEvent.placeDungeon(random, chunkX, chunkZ, world))) return;
+		if (MinecraftForge.TERRAIN_GEN_BUS.post(new DLDEvent.PlaceDungeonBegin(random, chunkX, chunkZ, world))) return;
 		DoomlikeDungeons.profiler.startTask("Create Dungeons");
 		Dungeon dungeon = new Dungeon(random, 
 							world.getBiomeGenForCoords(new BlockPos((chunkX * 16), 64, (chunkZ * 16))), 
@@ -84,6 +85,7 @@ public class Builder {
 		}
 		dungeon.preFinalize();
 		dungeon = null;
+		MinecraftForge.TERRAIN_GEN_BUS.post(new DLDEvent.PlaceDungeonFinish(random, chunkX, chunkZ, world, dungeon));
 		DoomlikeDungeons.profiler.endTask("Create Dungeons");
 	}
 	
